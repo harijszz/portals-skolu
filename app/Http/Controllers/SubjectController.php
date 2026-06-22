@@ -26,6 +26,8 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'teacher' => 'nullable|string|max:255',
+            'semester' => 'required|in:whole_year,1,2',
+            'credits' => 'nullable|integer|min:1|max:30',
             'passing_grade' => 'required|numeric|min:1|max:10',
         ]);
 
@@ -50,6 +52,8 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'teacher' => 'nullable|string|max:255',
+            'semester' => 'required|in:whole_year,1,2',
+            'credits' => 'nullable|integer|min:1|max:30',
             'passing_grade' => 'required|numeric|min:1|max:10',
         ]);
 

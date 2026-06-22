@@ -5,6 +5,31 @@
 @section('content')
     <h1 class="text-2xl font-bold mb-6">Panākumu pārskats</h1>
 
+    @if ($stats->subjectCount > 0)
+        <div class="grid gap-4 mb-8 md:grid-cols-4">
+            <div class="bg-white rounded shadow p-4 text-center">
+                <div class="text-2xl font-bold text-indigo-600">{{ $stats->subjectCount }}</div>
+                <div class="text-sm text-gray-500">Priekšmeti</div>
+            </div>
+            <div class="bg-white rounded shadow p-4 text-center">
+                <div class="text-2xl font-bold text-indigo-600">{{ $stats->gradeCount }}</div>
+                <div class="text-sm text-gray-500">Atzīmes</div>
+            </div>
+            <div class="bg-white rounded shadow p-4 text-center">
+                <div class="text-2xl font-bold {{ $stats->overallAverage !== null && $stats->overallAverage >= 4 ? 'text-green-600' : 'text-red-600' }}">
+                    {{ $stats->overallAverage !== null ? number_format($stats->overallAverage, 2) : '—' }}
+                </div>
+                <div class="text-sm text-gray-500">Kopējais vidējais</div>
+            </div>
+            <div class="bg-white rounded shadow p-4 text-center">
+                <div class="text-2xl font-bold {{ $stats->failingCount > 0 ? 'text-red-600' : 'text-green-600' }}">
+                    {{ $stats->passingCount }}/{{ $stats->subjectCount }}
+                </div>
+                <div class="text-sm text-gray-500">Ieskaitīti</div>
+            </div>
+        </div>
+    @endif
+
     @if ($summary->isEmpty())
         <div class="bg-white rounded shadow p-6 text-center text-gray-500">
             Vēl nav pievienots neviens priekšmets.

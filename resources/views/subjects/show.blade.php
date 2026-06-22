@@ -13,6 +13,10 @@
         <div class="bg-white rounded shadow p-6">
             <h2 class="font-semibold mb-3">Informācija</h2>
             <dl class="text-sm">
+                <dt class="text-gray-500">Semestris</dt>
+                <dd class="font-medium mb-2">{{ $subject->semester == 'whole_year' ? 'Viss gads' : $subject->semester . '. semestris' }}</dd>
+                <dt class="text-gray-500">Kredītpunkti</dt>
+                <dd class="font-medium mb-2">{{ $subject->credits ?? '—' }}</dd>
                 <dt class="text-gray-500">Ieskaites slieksnis</dt>
                 <dd class="font-medium mb-2">{{ number_format($subject->passing_grade, 1) }}</dd>
                 <dt class="text-gray-500">Vidējā atzīme</dt>

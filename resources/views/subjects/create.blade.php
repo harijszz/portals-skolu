@@ -22,6 +22,21 @@
         </div>
 
         <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">Semestris</label>
+            <select name="semester" class="w-full border rounded px-3 py-2 text-sm">
+                <option value="whole_year" {{ old('semester', 'whole_year') == 'whole_year' ? 'selected' : '' }}>Viss gads</option>
+                <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>1. semestris</option>
+                <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>2. semestris</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-1">KP (kredītpunkti)</label>
+            <input type="number" name="credits" step="1" min="1" max="30" value="{{ old('credits') }}"
+                class="w-full border rounded px-3 py-2 text-sm">
+        </div>
+
+        <div class="mb-4">
             <label class="block text-sm font-medium mb-1">Ieskaites slieksnis (1-10)</label>
             <input type="number" name="passing_grade" step="0.1" min="1" max="10" value="{{ old('passing_grade', 4) }}"
                 class="w-full border rounded px-3 py-2 text-sm @error('passing_grade') border-red-400 @enderror">

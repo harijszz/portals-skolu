@@ -19,6 +19,7 @@
                     <tr class="border-b bg-gray-50 text-left text-gray-500">
                         <th class="p-3">Nosaukums</th>
                         <th class="p-3">Skolotājs</th>
+                        <th class="p-3">Semestris</th>
                         <th class="p-3">Slieksnis</th>
                         <th class="p-3">Atzīmes</th>
                         <th class="p-3">Vidējais</th>
@@ -30,6 +31,7 @@
                         <tr class="border-b last:border-0 hover:bg-gray-50">
                             <td class="p-3 font-medium">{{ $subject->name }}</td>
                             <td class="p-3 text-gray-500">{{ $subject->teacher ?? '-' }}</td>
+                            <td class="p-3 text-gray-500">{{ $subject->semester == 'whole_year' ? 'Viss gads' : $subject->semester . '. sem.' }}</td>
                             <td class="p-3">{{ number_format($subject->passing_grade, 1) }}</td>
                             <td class="p-3">{{ $subject->grades->count() }}</td>
                             <td class="p-3">{{ $subject->average() !== null ? number_format($subject->average(), 2) : '-' }}</td>

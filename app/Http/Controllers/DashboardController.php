@@ -26,7 +26,27 @@ class DashboardController extends Controller
             ];
         });
 
-        return view('dashboard', compact('summary', 'subjects'));
+        $stats = (object) [
+            'subjectCount' => $subjects->count(),
+            'gradeCount' => $subjects->sum(fn($s) => $s->grades->count()),
+            'overallAverage' => $this->overallAverage($subjects),
+            'passingCount' => $summary->filter(fn($s) => $s->willPass === true)->count(),
+            'failingCount' => $summary->filter(fn($s) => $s->willPass === false)->count(),
+        ];
+
+        return view('dashboard', compact('summary', 'subjects', 'stats'));
+    }
+
+    private function overallAverage($subjects): ?float
+    {
+        $allGrades = $subjects->flatMap(fn($s) => $s->grades);
+        if ($allGrades->isEmpty()) return null;
+
+        $totalWeight = $allGrades->sum('weight');
+        if ($totalWeight == 0) return null;
+
+        $weightedSum = $allGrades->sum(fn($g) => $g->value * $g->weight);
+        return round($weightedSum / $totalWeight, 2);
     }
 
     public function calculator(Request $request): View
