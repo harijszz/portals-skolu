@@ -16,6 +16,21 @@
                     <a href="{{ route('grades.index') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Atzīmes</a>
                     <a href="{{ route('calculator') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Kalkulators</a>
                 </div>
+
+                <div class="flex items-center gap-3">
+                    @auth
+                        <span class="text-sm text-gray-600">{{ Auth::user()->name }}</span>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="text-sm text-gray-600 hover:text-red-600">Iziet</button>
+                        </form>
+                    @endauth
+
+                    @guest
+                        <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-indigo-600">Autorizēties</a>
+                        <a href="{{ route('register') }}" class="text-sm bg-indigo-600 text-white px-3 py-1.5 rounded hover:bg-indigo-700">Reģistrēties</a>
+                    @endguest
+                </div>
             </div>
         </div>
     </nav>
