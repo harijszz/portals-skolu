@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class SubjectController extends Controller
 {
     public function index(): View
     {
-        $subjects = Subject::with('grades')->orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->with('grades')->orderBy('name')->get();
         return view('subjects.index', compact('subjects'));
     }
 
@@ -28,7 +29,7 @@ class SubjectController extends Controller
             'passing_grade' => 'required|numeric|min:1|max:10',
         ]);
 
-        Subject::create($validated);
+        Auth::user()->subjects()->create($validated);
 
         return redirect()->route('subjects.index')->with('success', 'Priekšmets pievienots!');
     }

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     public function index(): View
     {
-        $subjects = Subject::with('grades')->orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->with('grades')->orderBy('name')->get();
 
         $summary = $subjects->map(function ($subject) {
             $average = $subject->average();
@@ -30,7 +31,7 @@ class DashboardController extends Controller
 
     public function calculator(Request $request): View
     {
-        $subjects = Subject::with('grades')->orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->with('grades')->orderBy('name')->get();
 
         $whatIfGrades = [];
         $whatIfAverage = null;

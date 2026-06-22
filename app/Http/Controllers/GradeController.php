@@ -6,25 +6,31 @@ use App\Models\Grade;
 use App\Models\Subject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class GradeController extends Controller
 {
     public function index(?Subject $subject = null): View
     {
+        $subjectIds = Auth::user()->subjects()->pluck('id');
+
         if ($subject && $subject->exists) {
-            $grades = Grade::where('subject_id', $subject->id)->with('subject')->latest()->get();
+            $grades = Grade::where('subject_id', $subject->id)
+                ->whereIn('subject_id', $subjectIds)
+                ->with('subject')->latest()->get();
         } else {
-            $grades = Grade::with('subject')->latest()->get();
+            $grades = Grade::whereIn('subject_id', $subjectIds)
+                ->with('subject')->latest()->get();
         }
 
-        $subjects = Subject::orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->orderBy('name')->get();
         return view('grades.index', compact('grades', 'subjects', 'subject'));
     }
 
     public function create(?Subject $subject = null): View
     {
-        $subjects = Subject::orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->orderBy('name')->get();
         return view('grades.create', compact('subjects', 'subject'));
     }
 
@@ -38,14 +44,15 @@ class GradeController extends Controller
             'date' => 'nullable|date',
         ]);
 
-        Grade::create($validated);
+        $subject = Auth::user()->subjects()->findOrFail($validated['subject_id']);
+        $subject->grades()->create($validated);
 
         return redirect()->route('grades.index')->with('success', 'Atzīme pievienota!');
     }
 
     public function edit(Grade $grade): View
     {
-        $subjects = Subject::orderBy('name')->get();
+        $subjects = Auth::user()->subjects()->orderBy('name')->get();
         return view('grades.edit', compact('grade', 'subjects'));
     }
 
