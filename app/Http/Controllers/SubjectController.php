@@ -13,6 +13,7 @@ class SubjectController extends Controller
     public function index(): View
     {
         $subjects = Auth::user()->subjects()->with('grades')->orderBy('name')->get();
+
         return view('subjects.index', compact('subjects'));
     }
 
@@ -39,6 +40,7 @@ class SubjectController extends Controller
     public function show(Subject $subject): View
     {
         $subject->load('grades');
+
         return view('subjects.show', compact('subject'));
     }
 
@@ -65,6 +67,7 @@ class SubjectController extends Controller
     public function destroy(Subject $subject): RedirectResponse
     {
         $subject->delete();
+
         return redirect()->route('subjects.index')->with('success', 'Priekšmets dzēsts!');
     }
 }

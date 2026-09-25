@@ -28,10 +28,10 @@ class DashboardController extends Controller
 
         $stats = (object) [
             'subjectCount' => $subjects->count(),
-            'gradeCount' => $subjects->sum(fn($s) => $s->grades->count()),
+            'gradeCount' => $subjects->sum(fn ($s) => $s->grades->count()),
             'overallAverage' => $this->overallAverage($subjects),
-            'passingCount' => $summary->filter(fn($s) => $s->willPass === true)->count(),
-            'failingCount' => $summary->filter(fn($s) => $s->willPass === false)->count(),
+            'passingCount' => $summary->filter(fn ($s) => $s->willPass === true)->count(),
+            'failingCount' => $summary->filter(fn ($s) => $s->willPass === false)->count(),
         ];
 
         return view('dashboard', compact('summary', 'subjects', 'stats'));
@@ -39,13 +39,18 @@ class DashboardController extends Controller
 
     private function overallAverage($subjects): ?float
     {
-        $allGrades = $subjects->flatMap(fn($s) => $s->grades);
-        if ($allGrades->isEmpty()) return null;
+        $allGrades = $subjects->flatMap(fn ($s) => $s->grades);
+        if ($allGrades->isEmpty()) {
+            return null;
+        }
 
         $totalWeight = $allGrades->sum('weight');
-        if ($totalWeight == 0) return null;
+        if ($totalWeight == 0) {
+            return null;
+        }
 
-        $weightedSum = $allGrades->sum(fn($g) => $g->value * $g->weight);
+        $weightedSum = $allGrades->sum(fn ($g) => $g->value * $g->weight);
+
         return round($weightedSum / $totalWeight, 2);
     }
 
@@ -66,7 +71,7 @@ class DashboardController extends Controller
             ];
 
             $totalWeight = collect($whatIfGrades)->sum('weight');
-            $weightedSum = collect($whatIfGrades)->sum(fn($g) => $g['value'] * $g['weight']);
+            $weightedSum = collect($whatIfGrades)->sum(fn ($g) => $g['value'] * $g['weight']);
             $whatIfAverage = $totalWeight > 0 ? round($weightedSum / $totalWeight, 2) : null;
         }
 
@@ -75,10 +80,12 @@ class DashboardController extends Controller
 
     private function calculateNeeded(Subject $subject): ?float
     {
-        if ($subject->grades->isEmpty()) return null;
+        if ($subject->grades->isEmpty()) {
+            return null;
+        }
 
         $totalWeight = $subject->grades->sum('weight');
-        $weightedSum = $subject->grades->sum(fn($g) => $g->value * $g->weight);
+        $weightedSum = $subject->grades->sum(fn ($g) => $g->value * $g->weight);
         $needed = ($subject->passing_grade * ($totalWeight + 1) - $weightedSum) / 1;
 
         return round($needed, 2);

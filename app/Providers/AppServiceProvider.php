@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Grade;
-use App\Models\Subject;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;

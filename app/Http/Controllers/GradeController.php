@@ -25,12 +25,14 @@ class GradeController extends Controller
         }
 
         $subjects = Auth::user()->subjects()->orderBy('name')->get();
+
         return view('grades.index', compact('grades', 'subjects', 'subject'));
     }
 
     public function create(?Subject $subject = null): View
     {
         $subjects = Auth::user()->subjects()->orderBy('name')->get();
+
         return view('grades.create', compact('subjects', 'subject'));
     }
 
@@ -53,6 +55,7 @@ class GradeController extends Controller
     public function edit(Grade $grade): View
     {
         $subjects = Auth::user()->subjects()->orderBy('name')->get();
+
         return view('grades.edit', compact('grade', 'subjects'));
     }
 
@@ -74,6 +77,7 @@ class GradeController extends Controller
     public function destroy(Grade $grade): RedirectResponse
     {
         $grade->delete();
+
         return redirect()->route('grades.index')->with('success', 'Atzīme dzēsta!');
     }
 }
