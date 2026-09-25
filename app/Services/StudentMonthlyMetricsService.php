@@ -45,10 +45,8 @@ class StudentMonthlyMetricsService
     {
         return $user->grades()
             ->whereNotNull('date')
-            ->whereBetween('date', [
-                $firstMonth->copy()->startOfMonth()->toDateString(),
-                $lastMonth->copy()->endOfMonth()->toDateString(),
-            ])
+            ->where('date', '>=', $firstMonth->copy()->startOfMonth()->toDateString())
+            ->where('date', '<', $lastMonth->copy()->addMonthNoOverflow()->startOfMonth()->toDateString())
             ->with('subject:id,name')
             ->oldest('date')
             ->get();

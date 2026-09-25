@@ -22,7 +22,7 @@ class Grade extends Model
         return [
             'value' => 'decimal:2',
             'weight' => 'decimal:2',
-            'date' => 'date',
+            'date' => 'date:Y-m-d',
         ];
     }
 }
