@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subject extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['user_id', 'name', 'teacher', 'semester', 'credits', 'passing_grade'];
 
     public function user(): BelongsTo
@@ -31,7 +34,7 @@ class Subject extends Model
             return null;
         }
 
-        $weightedSum = $this->grades->sum(fn($g) => $g->value * $g->weight);
+        $weightedSum = $this->grades->sum(fn ($g) => $g->value * $g->weight);
 
         return round($weightedSum / $totalWeight, 2);
     }
@@ -39,7 +42,9 @@ class Subject extends Model
     public function willPass(): ?bool
     {
         $avg = $this->average();
-        if ($avg === null) return null;
+        if ($avg === null) {
+            return null;
+        }
 
         return $avg >= $this->passing_grade;
     }
