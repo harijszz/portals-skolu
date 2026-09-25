@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\ScholarshipController;
 use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/calculator', [DashboardController::class, 'calculator'])->name('calculator');
+
+    Route::get('/scholarships', [ScholarshipController::class, 'index'])->name('scholarships.index');
 
     Route::resource('subjects', SubjectController::class);
 

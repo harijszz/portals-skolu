@@ -15,6 +15,7 @@
                     <a href="{{ route('subjects.index') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Priekšmeti</a>
                     <a href="{{ route('grades.index') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Atzīmes</a>
                     <a href="{{ route('calculator') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Kalkulators</a>
+                    <a href="{{ route('scholarships.index') }}" class="px-3 py-2 text-sm text-gray-600 hover:text-indigo-600">Stipendija</a>
                 </div>
 
                 <div class="flex items-center gap-3">
